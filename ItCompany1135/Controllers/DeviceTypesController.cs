@@ -20,18 +20,16 @@ namespace ItCompany1135.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateDeviceType(DeviceTypeDTO deviceType)
         {
-            var claim = User.Claims.First();
             var command = new CreateDeviceTypeCommand(){ DeviceType = deviceType };
             await mediator.SendAsync(command);
             return Ok();
         }
         [HttpGet("with-warranty-expiry")]
-        public async Task<ActionResult> GetTypesWarrantyMonths(int n)
+        public async Task<ActionResult<List<DeviceTypeDTO>>> GetTypesWarrantyMonths(int n)
         {
-            var claim = User.Claims.First();
             var command = new GetTypesWarrantyMonthsCommand(){ NMonths = n };
-            await mediator.SendAsync(command);
-            return Ok();
+            var result = await mediator.SendAsync(command);
+            return Ok(result);
         }
 
         //Client? GetClient()

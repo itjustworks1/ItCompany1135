@@ -16,7 +16,7 @@ namespace ItCompany1135.CQRS.Commands
             }
             public async Task<List<DeviceTypeDTO>> HandleAsync(GetTypesWarrantyMonthsCommand request, CancellationToken ct = default)
             {
-                return db.DeviceTypes.Where(s => (DateTime.Now - s.CreatedAt). == request.NMonths).Select(s => new DeviceTypeDTO
+                return db.DeviceTypes.ToList().Where(s => request.NMonths - DateTime.Now.Add(s.CreatedAt.ToTi).Month >= 0).Select(s => new DeviceTypeDTO
                 {
                     Category = s.Category,
                     CreatedAt = s.CreatedAt,
