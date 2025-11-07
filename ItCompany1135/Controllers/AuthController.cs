@@ -17,18 +17,12 @@ namespace ItCompany1135.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly Mediator mediator;
-        public AuthController(Mediator mediator)
+        IMediator mediator;
+        public AuthController(IMediator mediator)
         {
             this.mediator = mediator;
         }
-        private readonly ItCompany1135Context db;
-
-        public AuthController(ItCompany1135Context db)
-        {
-            this.db = db;
-        }
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> Login(LoginData data)
         {
             var command = new LoginCommand() { Data = data };

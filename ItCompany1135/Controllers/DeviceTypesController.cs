@@ -1,4 +1,6 @@
-﻿using ItCompany1135.DB;
+﻿using ItCompany1135.CQRS.Commands;
+using ItCompany1135.CQRS.DTO;
+using ItCompany1135.DB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyMediator.Interfaces;
@@ -15,23 +17,34 @@ namespace ItCompany1135.Controllers
         {
             this.mediator = mediator;
         }
-        //[HttpPost]
-        //public Task<ActionResult> CreateDeviceType()
-        //{
-        //    return Ok();
-        //}
-        Client? GetClient()
+        [HttpPost]
+        public async Task<ActionResult> CreateDeviceType(DeviceTypeDTO deviceType)
         {
             var claim = User.Claims.First();
-            if (claim.Type != ClaimValueTypes.Sid)
-                return null;
-
-            var client = db.Clients.Find(claim.Value);
-            if (client == null)
-                return null;
-
-            return client;
+            var command = new CreateDeviceTypeCommand(){ DeviceType = deviceType };
+            await mediator.SendAsync(command);
+            return Ok();
         }
+        [HttpGet("with-warranty-expiry")]
+        public async Task<ActionResult> GetTypesWarrantyMonths(int n)
+        {
+            var claim = User.Claims.First();
+            var command = new GetTypesWarrantyMonthsCommand(){ NMonths = n };
+            await mediator.SendAsync(command);
+            return Ok();
+        }
+
+        //Client? GetClient()
+        //{
+        //    if (claim.Type != ClaimValueTypes.Sid)
+        //        return null;
+
+        //    var client = db.Clients.Find(claim.Value);
+        //    if (client == null)
+        //        return null;
+
+        //    return client;
+        //}
 
 }
 }

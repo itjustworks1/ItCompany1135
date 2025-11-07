@@ -2,11 +2,13 @@
 using ItCompany1135.DB;
 using MyMediator.Interfaces;
 using MyMediator.Types;
+using System.Security.Claims;
 
 namespace ItCompany1135.CQRS.Commands
 {
     public class CreateDeviceTypeCommand : IRequest
     {
+        public Claim Claim { get; set; }
         public DeviceTypeDTO DeviceType { get; set; }
         public class CreateDeviceTypeCommandHandler : IRequestHandler<CreateDeviceTypeCommand, Unit>
         {
